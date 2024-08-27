@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "AI-RESUME",
+    "version": "1.0.0",
+    "description": "This is a Chrome Extension that helps people improve the matching of resumes and generate resumes",
+    "icons": {
+        "48": "images/icon.webp",
+        "128": "images/icon.webp"
+    },
+    "background": {
+        "service_worker": "service-worker.js",
+        "type": "module"
+    },
+    "side_panel": {
+        "default_path": "sidepanel/index.html"
+    },
+    "action": {
+        "default_title": "Show resume"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content_script.js"
+            ]
+        }
+    ],
+    "permissions": [
+        "sidePanel",
+        "tabs",
+        "storage",
+        "scripting"
+    ]
+}
