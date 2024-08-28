@@ -4,18 +4,18 @@
     "version": "1.0.0",
     "description": "This is a Chrome Extension that helps people improve the matching of resumes and generate resumes",
     "icons": {
-        "48": "images/icon.webp",
-        "128": "images/icon.webp"
+        "48": "src/images/typescript.svg",
+        "128": "src/images/typescript.svg"
     },
     "background": {
-        "service_worker": "service-worker.js",
+        "service_worker": "src/service_worker/index.ts",
         "type": "module"
     },
-    "side_panel": {
-        "default_path": "sidepanel/index.html"
-    },
     "action": {
-        "default_title": "Show resume"
+        "default_title": "Show resume",
+    },
+    "side_panel": {
+        "default_path": "src/sidepanel/index.html"
     },
     "content_scripts": [
         {
@@ -23,8 +23,9 @@
                 "<all_urls>"
             ],
             "js": [
-                "content_script.js"
-            ]
+                "src/content_scripts/index.ts"
+            ],
+            "type": "module"
         }
     ],
     "permissions": [
