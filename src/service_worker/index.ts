@@ -30,17 +30,26 @@ tabs.onActivated.addListener(async ({tabId}) => {
   }
 });
 
+let contentPort: chrome.runtime.Port | null, sidePanelPort: chrome.runtime.Port | null;
 
 runtime.onConnect.addListener((port) => {
     const { name } = port;
 
+    if (port.name === MESSAGE_PORT_NAME.CONTENT_SCRIPT) contentPort = port;
+    if (port.name === MESSAGE_PORT_NAME.SIDEPANEL) sidePanelPort = port;
+
     port.onMessage.addListener((message) => {
         if (name === MESSAGE_PORT_NAME.CONTENT_SCRIPT) {
-            console.log("Service-worker received content script:", message)
+          sidePanelPort?.postMessage(message);
         } else if (name === MESSAGE_PORT_NAME.SIDEPANEL) {
-            console.log("Service-worker received sidepanel:", message)
+          contentPort?.postMessage(message);
         }
     });
+
+    port.onDisconnect.addListener(() => {
+      if (name === MESSAGE_PORT_NAME.CONTENT_SCRIPT) contentPort = null;
+      if (name === MESSAGE_PORT_NAME.SIDEPANEL) sidePanelPort = null;
+  });
 });
 
 

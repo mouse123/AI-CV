@@ -1,8 +1,14 @@
-import { setupConnection, MESSAGE_PORT_NAME, MESSAGE_TYPE } from '../messaging/index.ts';
+import { setupConnection, MESSAGE_PORT_NAME, EVENT_TYPE } from '../messaging/index.ts';
 
-const sendMessage = setupConnection(MESSAGE_PORT_NAME.CONTENT_SCRIPT);
+const { port } = setupConnection(MESSAGE_PORT_NAME.CONTENT_SCRIPT);
 
-(async () => {
-    const response = await sendMessage({type: MESSAGE_TYPE.REQUEST, data: 'Hello from content_script'});
-    console.log('Context script received:', response);
-})();
+const getJobSecText = ()=>{
+    const content = document.querySelector('.job-sec-text')?.textContent
+    return content
+}
+
+port.onMessage.addListener((message) => {
+    if(message.type === EVENT_TYPE.JOB_CONTENT){
+        port.postMessage({data: getJobSecText()});
+    }
+});

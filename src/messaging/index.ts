@@ -9,14 +9,21 @@ export const MESSAGE_TYPE = {
     ERROR: 'ERROR'
 }
 
+export const EVENT_TYPE = {
+    JOB_CONTENT: 'JOB_CONTENT'
+}
+
 export function setupConnection(name:string) {
     const port = chrome.runtime.connect({name});
 
-    // 返回一个异步发送消息的函数
-    return (message: any) => {
-        return new Promise((resolve) => {
-            port.onMessage.addListener(resolve);
-            port.postMessage(message);
-        });
-    };
+    return {
+        port,
+        send:(message: any): Promise<any> => {
+            // 返回一个异步发送消息的函数
+            return new Promise((resolve) => {
+                port.onMessage.addListener(resolve);
+                port.postMessage(message);
+            });
+        }
+    }
 }

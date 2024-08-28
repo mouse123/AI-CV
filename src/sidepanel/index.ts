@@ -1,9 +1,14 @@
-import { setupConnection, MESSAGE_PORT_NAME, MESSAGE_TYPE } from '../messaging/index';
+import { setupConnection, MESSAGE_PORT_NAME, EVENT_TYPE } from '../messaging/index';
 
+const {send} = setupConnection(MESSAGE_PORT_NAME.SIDEPANEL);
 
-const sendMessage = setupConnection(MESSAGE_PORT_NAME.SIDEPANEL);
+const getJobContent = async () => {
+    const { data } = await send({type: EVENT_TYPE.JOB_CONTENT});
+    console.log("data~~~~~~~",data)
+    const jobContent = document.querySelector('#job-content')
+    if(jobContent)jobContent.innerHTML = data
+}
 
 (async () => {
-    const response = await sendMessage({type: MESSAGE_TYPE.REQUEST, data: 'Hello from sidePanel'});
-    console.log('Sidepanel Received:', response);
+    getJobContent()
 })();

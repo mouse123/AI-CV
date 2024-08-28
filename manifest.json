@@ -12,7 +12,7 @@
         "type": "module"
     },
     "action": {
-        "default_title": "Show resume",
+        "default_title": "Show resume"
     },
     "side_panel": {
         "default_path": "src/sidepanel/index.html"
